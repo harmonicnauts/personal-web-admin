@@ -17,7 +17,7 @@ router.get("/project/:proj_id", getProjectById);
 router.post("/project", createProject);
 
 /// UPDATE
-router.put("/project/:proj_id", updateProject);
+router.patch("/project/:proj_id", updateProject);
 
 /// DELETE
 router.delete("/project/:proj_id", deleteProject);

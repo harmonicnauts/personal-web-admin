@@ -1,11 +1,17 @@
 import express, { Application, Request, Response } from "express";
 import path from "path";
 import Routes from "./routes/index.route";
+import cors from "cors";
 
 const app: Application = express();
 
+const allowedOrigins = ["http://localhost:5173"];
+const options: cors.CorsOptions = {
+  origin: allowedOrigins,
+};
+
+app.use(cors(options));
 app.use(express.json());
-// app.use(cors);
 
 const port: Number = Number(process.env.PORT) || 3000;
 

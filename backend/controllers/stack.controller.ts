@@ -6,6 +6,7 @@ import { validationResult } from "express-validator";
 export const getStacks = async (req: Request, res: Response) => {
   try {
     const stacks = await prisma.stack.findMany();
+    console.log(stacks);
     res.json(stacks);
   } catch (error) {
     res.status(500).json({
