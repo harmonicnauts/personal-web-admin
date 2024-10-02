@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 const API_URL = `http://localhost:3000/api`;
 
 export const fetchAllData = async (url_path: string) => {
@@ -55,14 +57,12 @@ export const handleDelete = async (
   url_path: string
 ) => {
   if (!id) return;
+  const url = `${API_URL}/${url_path}/${id}`;
 
   try {
-    const response = await fetch(
-      `http://localhost:5000/api/${url_path}/delete/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
+    const response = await fetch(url, {
+      method: "DELETE",
+    });
     if (response.ok) {
       console.log("DELETED SUCCESFULLY");
     } else {
