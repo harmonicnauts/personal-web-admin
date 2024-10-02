@@ -36,8 +36,12 @@ export const getStackById = async (req: Request, res: Response) => {
 ///////////////////////        POST METHODS           /////////////////////////////////////////////
 export const createStack = async (req: Request, res: Response) => {
   const result = validationResult(req);
-  if (!result.isEmpty()) return res.status(500).send(result.array);
+  if (!result.isEmpty()) {
+    console.log("Validation Errors:", result.array());
+    return res.status(400).json({ errors: result.array() });
+  }
   const stack = req.body;
+  console.log(stack);
   try {
     console.log(stack);
     const newStack = await prisma.stack.create({ data: stack });
@@ -53,7 +57,10 @@ export const createStack = async (req: Request, res: Response) => {
 ///////////////////////        PATCH METHODS           /////////////////////////////////////////////
 export const updateStack = async (req: Request, res: Response) => {
   const result = validationResult(req);
-  if (!result.isEmpty()) return res.status(500).send(result.array);
+  if (!result.isEmpty()) {
+    console.log("Validation Errors:", result.array());
+    return res.status(400).json({ errors: result.array() });
+  }
   const { id } = req.params;
   const stack = req.body;
   try {

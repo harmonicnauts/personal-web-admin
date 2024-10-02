@@ -36,8 +36,12 @@ export const getProjectById = async (req: Request, res: Response) => {
 ///////////////////////        POST METHODS           /////////////////////////////////////////////
 export const createProject = async (req: Request, res: Response) => {
   const result = validationResult(req);
-  if (!result.isEmpty()) return res.status(500).send(result.array);
+  if (!result.isEmpty()) {
+    console.log("Validation Errors:", result.array());
+    return res.status(400).json({ errors: result.array() });
+  }
   const project = req.body;
+  console.log(project);
   try {
     const newProject = await prisma.projects.create({ data: project });
     res.status(200).send(newProject);
@@ -52,7 +56,10 @@ export const createProject = async (req: Request, res: Response) => {
 ///////////////////////        PATCH METHODS           /////////////////////////////////////////////
 export const updateProject = async (req: Request, res: Response) => {
   const result = validationResult(req);
-  if (!result.isEmpty()) return res.status(500).send(result.array);
+  if (!result.isEmpty()) {
+    console.log("Validation Errors:", result.array());
+    return res.status(400).json({ errors: result.array() });
+  }
   const { proj_id } = req.params;
   const project = req.body;
   try {
