@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DefaultLayout from "../Layouts/DefaultLayout";
 import SelectGroup from "./SelectGroup";
-import { fetchSingleRecord } from "@/services/fetchData";
+import { fetchSingleRecord } from "@/services/dataOperations";
 import { useNavigate, useParams } from "react-router-dom";
 
 interface StackFormProp {
@@ -22,13 +22,9 @@ export const StackForm: React.FC<StackFormProp> = ({ method }) => {
     const apiUrl = isUpdate
     ? `http://localhost:3000/api/stack/${id}`
     : "http://localhost:3000/api/stack/";
-    const payload = {
-      name: stackData.name,
-      logo: stackData.logo,
-      href: stackData.href,
-      hoverColor: stackData.hoverColor,
-      category: stackData.category,
-    }
+    const payload = Object.fromEntries(
+      Object.entries(stackData).filter(([key, value]) => value)
+    );
     try {
       const response = await fetch(apiUrl, {
         method: isUpdate ? 'PATCH' : 'POST',
@@ -63,6 +59,13 @@ export const StackForm: React.FC<StackFormProp> = ({ method }) => {
     category: "",
   });
 
+  const handleCategoryChange = (value: string) => {
+    setStackData({
+      ...stackData,
+      category: value,
+    });
+  };
+
   useEffect(() => {
     if (isUpdate && id) {
       fetchSingleRecord(Number(id), "stack").then((data) => {
@@ -83,7 +86,7 @@ export const StackForm: React.FC<StackFormProp> = ({ method }) => {
           </h3>
         </div>
         <form 
-          // onSubmit={handleSubmit}
+          onSubmit={handleSubmit}
         >
           <div className="p-6.5">
             <div className="mb-4.5">
@@ -135,7 +138,7 @@ export const StackForm: React.FC<StackFormProp> = ({ method }) => {
               <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 Category
               </label>
-              <SelectGroup />
+              <SelectGroup table_name="stack" onChange={handleCategoryChange}/>
             </div>
 
             <div className="mb-4.5">

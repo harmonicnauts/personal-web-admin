@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import DefaultLayout from "../Layouts/DefaultLayout";
 import SelectGroup from "./SelectGroup";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchSingleRecord } from "@/services/fetchData";
+import { fetchSingleRecord } from "@/services/dataOperations";
 
 interface ProjectFormProp {
   method : string;
@@ -22,14 +22,10 @@ export const ProjectForm : React.FC<ProjectFormProp> = ({method}) => {
     const apiUrl = isUpdate
     ? `http://localhost:3000/api/project/${proj_id}`
     : "http://localhost:3000/api/project/";
-    const payload = {
-      proj_name: ProjectData.proj_name,
-      proj_img: ProjectData.proj_img,
-      category: ProjectData.category,
-      description: ProjectData.description,
-      github: ProjectData.github,
-      hosting: ProjectData.hosting,
-    }
+    const payload = Object.fromEntries(
+      Object.entries(ProjectData).filter(([key, value]) => value)
+    );
+    console.log('Project Payload:', JSON.stringify(payload));
     try {
       const response = await fetch(apiUrl, {
         method: isUpdate ? 'PATCH' : 'POST',
@@ -39,7 +35,10 @@ export const ProjectForm : React.FC<ProjectFormProp> = ({method}) => {
         body: JSON.stringify(payload),
       });
 
+      console.log('Response Status:', response.status);
+      
       const result = await response.json();
+      console.log('Project API Response:', result);
 
       if (response.ok) {
         alert(isUpdate ? "Project updated successfully" : "Project added successfully");
@@ -65,6 +64,14 @@ export const ProjectForm : React.FC<ProjectFormProp> = ({method}) => {
     hosting: "",
   });
 
+
+  const handleCategoryChange = (value: string) => {
+    setProjectData({
+      ...ProjectData,
+      category: value, 
+    });
+  };
+
   useEffect(() => {
     if (isUpdate && proj_id) {
       fetchSingleRecord(Number(proj_id), "project").then((data) => {
@@ -83,7 +90,7 @@ export const ProjectForm : React.FC<ProjectFormProp> = ({method}) => {
               Project {method} form
             </h3>
           </div>
-          <form action="#">
+          <form onSubmit={handleSubmit}>
             <div className="p-6.5">
               <div className="mb-4.5">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -156,7 +163,7 @@ export const ProjectForm : React.FC<ProjectFormProp> = ({method}) => {
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                   Category
                 </label>
-                <SelectGroup />
+                <SelectGroup table_name="project" onChange={handleCategoryChange}/>
               </div>
               <div className="mb-4.5">
                 <label className="mb-3 block text-sm font-medium text-black dark:text-white">

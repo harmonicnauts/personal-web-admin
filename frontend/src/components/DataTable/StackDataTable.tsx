@@ -11,8 +11,8 @@ import {
   } from "../ui/table";
 import { Stack } from "@/interfaces/Stack";
 import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
-import { handleDelete } from "@/services/fetchData";
+import { Link, useNavigate } from "react-router-dom";
+import { handleDelete } from "@/services/dataOperations";
 
 interface StackDataTableProps {
   table_name : string;
@@ -54,8 +54,9 @@ export const StackDataTable: React.FC<StackDataTableProps> = ({ table_name, data
                   <Link to={`/stack/${item.id}`}>Update</Link>
                 </Button>
                 <Button className="m-1" onClick={() => {
-                  // handleDelete(item.id, 'stack');
-                  console.log('Delete Button Clicked!')
+                  handleDelete(item.id, 'stack');
+                  console.log('Delete Button Clicked!');
+                  window.location.reload();
                 }}>
                   Delete
                 </Button>

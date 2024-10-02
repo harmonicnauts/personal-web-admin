@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DefaultLayout from "../Layouts/DefaultLayout";
 import { Stack } from "@/interfaces/Stack";
-import { fetchAllData } from "@/services/fetchData";
+import { fetchAllData } from "@/services/dataOperations";
 import { StackDataTable } from "../DataTable/StackDataTable";
 
 export const Stacks : React.FC= () => {

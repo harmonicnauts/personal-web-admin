@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ProjectDataTable } from "../DataTable/ProjectDataTable";
 import DefaultLayout from "../Layouts/DefaultLayout";
-import { fetchAllData } from "@/services/fetchData";
+import { fetchAllData } from "@/services/dataOperations";
 import { Project } from "@/interfaces/Project";
 
 export const Projects : React.FC= () => {

@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 
-const SelectGroup: React.FC = () => {
+interface SelectGroupProp {
+  table_name : string;
+  onChange: (value:string)=>void;
+}
+
+const SelectGroup: React.FC<SelectGroupProp> = ({table_name, onChange}) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
 
@@ -8,6 +13,73 @@ const SelectGroup: React.FC = () => {
     setIsOptionSelected(true);
   };
 
+  const isStack = (table_name === 'stack')
+
+  const StackSelectMenu = () => {
+    return(
+      <select
+            value={selectedOption}
+            onChange={(e) => {
+              setSelectedOption(e.target.value);
+              changeTextColor();
+              onChange(e.target.value);
+            }}
+            className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-12 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
+              isOptionSelected ? "text-black dark:text-white" : ""
+            }`}
+          >
+            <option value="" disabled className="text-body dark:text-bodydark">
+              Status of the tech stack
+            </option>
+            <option value="learning" className="text-body dark:text-bodydark">
+              Learning
+            </option>
+            <option value="using" className="text-body dark:text-bodydark">
+              Daily Driver
+            </option>
+          </select>
+    )
+  }
+  const ProjectSelectMenu = () => {
+    return(
+      <select
+            value={selectedOption}
+            onChange={(e) => {
+              setSelectedOption(e.target.value);
+              changeTextColor();
+              onChange(e.target.value);
+            }}
+            className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-12 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
+              isOptionSelected ? "text-black dark:text-white" : ""
+            }`}
+          >
+            <option value="" disabled className="text-body dark:text-bodydark">
+              Project Category
+            </option>
+            <option value="web" className="text-body dark:text-bodydark">
+              web
+            </option>
+            <option value="machinelearning" className="text-body dark:text-bodydark">
+              Machine Learning
+            </option>
+            <option value="deeplearning" className="text-body dark:text-bodydark">
+              Deep Learning
+            </option>
+            <option value="dataanalysis" className="text-body dark:text-bodydark">
+              Data Analysis
+            </option>
+            <option value="iot" className="text-body dark:text-bodydark">
+              Internet of Things
+            </option>
+            <option value="desktop" className="text-body dark:text-bodydark">
+              Desktop
+            </option>
+            <option value="mobile" className="text-body dark:text-bodydark">
+              Mobile
+            </option>
+          </select>
+    )
+  }
   return (
     <div>
       <div className="relative z-20 bg-white dark:bg-form-input">
@@ -42,29 +114,7 @@ const SelectGroup: React.FC = () => {
           </svg>
         </span>
 
-        <select
-          value={selectedOption}
-          onChange={(e) => {
-            setSelectedOption(e.target.value);
-            changeTextColor();
-          }}
-          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-12 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
-            isOptionSelected ? "text-black dark:text-white" : ""
-          }`}
-        >
-          <option value="" disabled className="text-body dark:text-bodydark">
-            Select Country
-          </option>
-          <option value="USA" className="text-body dark:text-bodydark">
-            USA
-          </option>
-          <option value="UK" className="text-body dark:text-bodydark">
-            UK
-          </option>
-          <option value="Canada" className="text-body dark:text-bodydark">
-            Canada
-          </option>
-        </select>
+        {isStack ? <StackSelectMenu /> : <ProjectSelectMenu />}
 
         <span className="absolute right-4 top-1/2 z-10 -translate-y-1/2">
           <svg
@@ -90,3 +140,4 @@ const SelectGroup: React.FC = () => {
 };
 
 export default SelectGroup;
+
